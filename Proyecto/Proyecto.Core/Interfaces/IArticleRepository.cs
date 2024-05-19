@@ -11,7 +11,7 @@ namespace Proyecto.Core.Interfaces
     {
         Task<IEnumerable<Article>> GetArticles();
         Task<Article> GetArticle(int id);
-        Task InsertArticle(Article article);
+        Task InsertArticle(Article article, int userId);
         Task<bool> UpdateArticle(Article article);
         Task<bool> DeleteArticle(int id);
     }

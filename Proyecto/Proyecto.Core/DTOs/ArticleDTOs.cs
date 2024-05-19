@@ -13,7 +13,6 @@ namespace Proyecto.Core.DTOs
         public string? Content { get; set; }
 
         public DateTime? PublicationDate { get; set; }
-
-        public int? UserId { get; set; }
+        
     }
 }

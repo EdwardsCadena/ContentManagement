@@ -11,6 +11,10 @@ namespace Proyecto.Core.Interfaces
     {
         Task<User> GetLoginByCredentials(UserLogin login);
         Task RegisterUser(User user);
-        
+        Task<IEnumerable<User>> GetUsers();
+        Task<User> GetUser(int id);
+        Task<bool> UpdateUser(User user);
+        Task<bool> DeleteUser(int id);
+
     }
 }

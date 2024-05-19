@@ -15,6 +15,7 @@ namespace Proyecto.Infrastructure.Repository
     public class MultimediaFilesRepository : IMultimediaFile
     {
         private readonly ContentManagementContext _context;
+        DateTime currentDate = DateTime.Now;
         public MultimediaFilesRepository(ContentManagementContext context)
         {
             
@@ -62,7 +63,8 @@ namespace Proyecto.Infrastructure.Repository
                 {
                     FileName = uniqueFileName,
                     FilePath = fullPath,
-                    FileType = fileType
+                    FileType = fileType,
+                    CreatedAt = DateTime.Now
                 };
 
                 _context.MultimediaFiles.Add(multimediaFile);

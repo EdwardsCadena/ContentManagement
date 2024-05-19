@@ -13,6 +13,7 @@ namespace Proyecto.Infrastructure.Repository
     public class ArticleRepository : IArticleRepository
     {
         private readonly ContentManagementContext _context;
+        DateTime currentDate = DateTime.Now;
         public ArticleRepository(ContentManagementContext context)
         {
             _context = context;
@@ -27,9 +28,18 @@ namespace Proyecto.Infrastructure.Repository
             var Article = await _context.Articles.FirstOrDefaultAsync(x => x.ArticleId == id);
             return Article;
         }
-        public async Task InsertArticle(Article article)
+        public async Task InsertArticle(Article article, int UserId)
         {
-            _context.Articles.Add(article);
+            Article register = new Article
+            {
+                Title = article.Title,
+                PublicationDate = article.PublicationDate,
+                Content = article.Content,
+                CreatedAt = DateTime.Now,
+                UserId = UserId
+               
+            };
+            _context.Articles.Add(register);
             await _context.SaveChangesAsync();
         }
         public async Task<bool> UpdateArticle(Article article)
@@ -38,6 +48,7 @@ namespace Proyecto.Infrastructure.Repository
             result.Title = article.Title;
             result.Content = article.Content;
             result.UserId = article.UserId;
+            result.UpdatedAt = DateTime.Now;
             int rows = await _context.SaveChangesAsync();
             return rows > 0;
         }

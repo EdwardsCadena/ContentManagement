@@ -14,6 +14,7 @@ namespace Proyecto.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MultimediaFileController : ControllerBase
     {
         private readonly IMultimediaFile _MfileRepository;

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto.API.Response;
 using Proyecto.Core.DTOs;
 using Proyecto.Core.Entities;
 using Proyecto.Core.Interfaces;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,6 +13,7 @@ namespace Proyecto.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ArticleController : ControllerBase
     {
         private readonly IArticleRepository _ArticleRepository;
@@ -42,8 +45,14 @@ namespace Proyecto.API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostArticle(ArticleDTOs articledto)
         {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return Unauthorized();
+            }
             var arti = _maper.Map<Article>(articledto);
-            await _ArticleRepository.InsertArticle(arti);
+            var UserId = userId;
+            await _ArticleRepository.InsertArticle(arti, UserId);
             return Ok(articledto);
         }
 
@@ -63,8 +72,8 @@ namespace Proyecto.API.Controllers
         public async Task<IActionResult> DeleteArticle(int id)
         {
             var result = await _ArticleRepository.DeleteArticle(id);
-            var deletealquiler = new ApiResponse<bool>(result);
-            return Ok(deletealquiler);
+            var delete = new ApiResponse<bool>(result);
+            return Ok(delete);
         }
     }
 }
